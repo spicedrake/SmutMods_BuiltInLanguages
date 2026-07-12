@@ -1,0 +1,17 @@
+Key,English,Translation,Notes
+smutlabs.content_wizard.window_title,SmutLabs Content Wizard,SmutLabs Cargo Wizard,Main wizard window title
+smutlabs.content_wizard.active_project,Active Mod Project,Active Cargo Charter,Label beside the selected project
+smutlabs.content_wizard.create_new,Create New...,Commission New...,Button that opens the new mod window
+smutlabs.content_wizard.ping,Ping,Signal,Highlights the selected project asset
+smutlabs.content_wizard.reveal,Reveal,Find in Hold,Reveals the selected project asset
+smutlabs.content_wizard.no_active,"Select an existing CatalogModProject asset, or click ""Create New..."" to start a new mod.\n\nThis asset is the source-of-truth for mod identity, versioning, icon, and export settings.","Choose an existing cargo charter, or click ""Commission New..."" to begin a new mod.\n\nThis charter governs the cargo's identity, version, icon, and export orders.",Shown when no project is selected
+smutlabs.content_wizard.identity.heading,Identity (Locked After Creation),Identity (Sealed After Commission),Section heading
+smutlabs.content_wizard.identity.catalog_type,Catalog Type,Cargo Type,Locked catalog type field
+smutlabs.content_wizard.identity.mod_id,Mod ID,Mod Mark,Locked mod identifier field
+smutlabs.content_wizard.identity.created_utc,Created (UTC),Commissioned (UTC),Locked creation timestamp field
+smutlabs.content_wizard.version.heading,Version (Major.Minor.Patch),Voyage Mark (Major.Minor.Patch),Version section heading
+smutlabs.content_wizard.version.increment_major,Increment Major,Raise Major,Version button
+smutlabs.content_wizard.version.increment_minor,Increment Minor,Raise Minor,Version button
+smutlabs.content_wizard.version.increment_patch,Increment Patch,Raise Patch,Version button
+smutlabs.content_wizard.version.undo,Undo,Rewind,Version undo button
+smutlabs.content_wizard.version.changed,Version set to {0}.{1}.{2},Voyage mark set to {0}.{1}.{2},Notification after changing version
