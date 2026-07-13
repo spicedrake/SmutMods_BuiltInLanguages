@@ -1,17 +1,95 @@
 Key,English,Translation,Notes
-smutlabs.content_wizard.window_title,SmutLabs Content Wizard,,Main wizard window title
-smutlabs.content_wizard.active_project,Active Mod Project,,Label beside the selected project
-smutlabs.content_wizard.create_new,Create New...,,Button that opens the new mod window
-smutlabs.content_wizard.ping,Ping,,Highlights the selected project asset
-smutlabs.content_wizard.reveal,Reveal,,Reveals the selected project asset
-smutlabs.content_wizard.no_active,"Select an existing CatalogModProject asset, or click ""Create New..."" to start a new mod.\n\nThis asset is the source-of-truth for mod identity, versioning, icon, and export settings.",,Shown when no project is selected
-smutlabs.content_wizard.identity.heading,Identity (Locked After Creation),,Section heading
-smutlabs.content_wizard.identity.catalog_type,Catalog Type,,Locked catalog type field
-smutlabs.content_wizard.identity.mod_id,Mod ID,,Locked mod identifier field
-smutlabs.content_wizard.identity.created_utc,Created (UTC),,Locked creation timestamp field
-smutlabs.content_wizard.version.heading,Version (Major.Minor.Patch),,Version section heading
-smutlabs.content_wizard.version.increment_major,Increment Major,,Version button
-smutlabs.content_wizard.version.increment_minor,Increment Minor,,Version button
-smutlabs.content_wizard.version.increment_patch,Increment Patch,,Version button
-smutlabs.content_wizard.version.undo,Undo,,Version undo button
-smutlabs.content_wizard.version.changed,Version set to {0}.{1}.{2},,Notification after changing version
+smutlabs.common.cancel,Cancel,,
+smutlabs.common.create,Create,,
+smutlabs.common.increment,Increment,Increment,SmutLabs Content Wizard
+smutlabs.common.ok,OK,,
+smutlabs.content_wizard.active_project,Active Mod Project,Active Mod Project,SmutLabs Content Wizard
+smutlabs.content_wizard.banner_missing,Wizard banner not found at:\n{0},Wizard banner not found at:\n{0},SmutLabs Content Wizard
+smutlabs.content_wizard.build.browse,Browse,Browse,SmutLabs Content Wizard
+smutlabs.content_wizard.build.choose_output_folder,Choose Export Output Folder,Choose Export Output Folder,SmutLabs Content Wizard
+smutlabs.content_wizard.build.failed_message,Platform: {0}\n\n{1},Platform: {0}\n\n{1},SmutLabs Content Wizard
+smutlabs.content_wizard.build.failed_title,Build Failed,Build Failed,SmutLabs Content Wizard
+smutlabs.content_wizard.build.heading,Build / Export,Build / Export,SmutLabs Content Wizard
+smutlabs.content_wizard.build.output_folder,Output Folder,Output Folder,SmutLabs Content Wizard
+smutlabs.content_wizard.build.output_required,Choose an output folder to build/export into.,Choose an output folder to build/export into.,SmutLabs Content Wizard
+smutlabs.content_wizard.build.selected_platforms,Build / Export Selected Platforms,Build / Export Selected Platforms,SmutLabs Content Wizard
+smutlabs.content_wizard.catalog_type,Catalog Type,Catalog Type,SmutLabs Content Wizard
+smutlabs.content_wizard.content.character_prefab,Character Prefab,Character Prefab,SmutLabs Content Wizard
+smutlabs.content_wizard.content.force_android_fallback,Force Android Fallback Materials (testing),Force Android Fallback Materials (testing),SmutLabs Content Wizard
+smutlabs.content_wizard.content.force_android_fallback_help,Currently ignored. Android builds preserve original materials and shaders for live Quest shader testing.,Currently ignored. Android builds preserve original materials and shaders for live Quest shader testing.,SmutLabs Content Wizard
+smutlabs.content_wizard.content.heading,Catalog Content,Catalog Content,SmutLabs Content Wizard
+smutlabs.content_wizard.content.level_scene,Level Scene,Level Scene,SmutLabs Content Wizard
+smutlabs.content_wizard.content.prop_prefab,Prop Prefab,Prop Prefab,SmutLabs Content Wizard
+smutlabs.content_wizard.content.scenario_notes,Scenario Notes (stub),Scenario Notes (stub),SmutLabs Content Wizard
+smutlabs.content_wizard.content.scenario_stub_help,Scenario export is a stub for now (metadata + icon + mod.json).,Scenario export is a stub for now (metadata + icon + mod.json).,SmutLabs Content Wizard
+smutlabs.content_wizard.create.empty,(empty),(empty),SmutLabs Content Wizard
+smutlabs.content_wizard.create.final_mod_id,Final Mod ID: {0},Final Mod ID: {0},SmutLabs Content Wizard
+smutlabs.content_wizard.create.heading,Create New Catalog Mod,Create New Catalog Mod,SmutLabs Content Wizard
+smutlabs.content_wizard.create.help,"Mod ID is the permanent machine-safe identifier for this mod.\nIf Create is enabled, the name is valid and safe to proceed with.","Mod ID is the permanent machine-safe identifier for this mod.\nIf Create is enabled, the name is valid and safe to proceed with.",SmutLabs Content Wizard
+smutlabs.content_wizard.create.invalid_mod_id_title,Invalid Mod ID,Invalid Mod ID,SmutLabs Content Wizard
+smutlabs.content_wizard.create.mod_id_label,"Mod ID (permanent, lowercase, machine-safe)","Mod ID (permanent, lowercase, machine-safe)",SmutLabs Content Wizard
+smutlabs.content_wizard.create.rule_allowed_chars,"Only lowercase letters, numbers, and underscores are allowed.","Only lowercase letters, numbers, and underscores are allowed.",SmutLabs Content Wizard
+smutlabs.content_wizard.create.rule_max_length,Must be {0} characters or fewer.,Must be {0} characters or fewer.,SmutLabs Content Wizard
+smutlabs.content_wizard.create.rule_min_length,Must be at least {0} characters.,Must be at least {0} characters.,SmutLabs Content Wizard
+smutlabs.content_wizard.create.rule_no_hyphens,No hyphens.,No hyphens.,SmutLabs Content Wizard
+smutlabs.content_wizard.create.rule_no_spaces,No spaces.,No spaces.,SmutLabs Content Wizard
+smutlabs.content_wizard.create.rule_no_uppercase,No uppercase letters.,No uppercase letters.,SmutLabs Content Wizard
+smutlabs.content_wizard.create.rule_not_empty,Must not be empty.,Must not be empty.,SmutLabs Content Wizard
+smutlabs.content_wizard.create.rule_start_letter,Must start with a letter.,Must start with a letter.,SmutLabs Content Wizard
+smutlabs.content_wizard.create.rules_heading,Rules,Rules,SmutLabs Content Wizard
+smutlabs.content_wizard.create.save_message,Choose where to save this CatalogModProject asset.,Choose where to save this CatalogModProject asset.,SmutLabs Content Wizard
+smutlabs.content_wizard.create.save_title,Create Mod Project Asset,Create Mod Project Asset,SmutLabs Content Wizard
+smutlabs.content_wizard.create.status_invalid,<color=#E06C75><b>INVALID</b></color>  Fix the failing rules below before creating the mod.,<color=#E06C75><b>INVALID</b></color>  Fix the failing rules below before creating the mod.,SmutLabs Content Wizard
+smutlabs.content_wizard.create.status_valid,<color=#65C466><b>VALID</b></color>  This Mod ID is ready to use.,<color=#65C466><b>VALID</b></color>  This Mod ID is ready to use.,SmutLabs Content Wizard
+smutlabs.content_wizard.create.title,Create New Mod,Create New Mod,SmutLabs Content Wizard
+smutlabs.content_wizard.create_new,Create New...,Create New...,SmutLabs Content Wizard
+smutlabs.content_wizard.created_utc,Created (UTC),Created (UTC),SmutLabs Content Wizard
+smutlabs.content_wizard.icon.capture,Capture Icon,Capture Icon,SmutLabs Content Wizard
+smutlabs.content_wizard.icon.heading,Icon (Required),Icon (Required),SmutLabs Content Wizard
+smutlabs.content_wizard.icon.invalid_image_message,Could not read that image file.,Could not read that image file.,SmutLabs Content Wizard
+smutlabs.content_wizard.icon.invalid_image_title,Invalid Image,Invalid Image,SmutLabs Content Wizard
+smutlabs.content_wizard.icon.no_icon,{0}x{0}\n(no icon),{0}x{0}\n(no icon),SmutLabs Content Wizard
+smutlabs.content_wizard.icon.no_sceneview_message,No active SceneView camera found. Click in the Scene view and try again.,No active SceneView camera found. Click in the Scene view and try again.,SmutLabs Content Wizard
+smutlabs.content_wizard.icon.no_sceneview_title,No SceneView,No SceneView,SmutLabs Content Wizard
+smutlabs.content_wizard.icon.replace_background,Replace Background,Replace Background,SmutLabs Content Wizard
+smutlabs.content_wizard.icon.replace_background_help,"When enabled, the SceneView skybox/background is replaced with pure black during icon capture. Scene geometry still renders normally.","When enabled, the SceneView skybox/background is replaced with pure black during icon capture. Scene geometry still renders normally.",SmutLabs Content Wizard
+smutlabs.content_wizard.icon.requirements,Icon must be exactly {0}x{0}. Uploads that do not match will be rejected. Export is blocked without an icon.,Icon must be exactly {0}x{0}. Uploads that do not match will be rejected. Export is blocked without an icon.,SmutLabs Content Wizard
+smutlabs.content_wizard.icon.upload,Upload Icon,Upload Icon,SmutLabs Content Wizard
+smutlabs.content_wizard.icon.upload_dialog_title,Upload Icon (PNG/JPG),Upload Icon (PNG/JPG),SmutLabs Content Wizard
+smutlabs.content_wizard.icon.upload_failed_message,Error reading image:\n{0},Error reading image:\n{0},SmutLabs Content Wizard
+smutlabs.content_wizard.icon.upload_failed_title,Upload Failed,Upload Failed,SmutLabs Content Wizard
+smutlabs.content_wizard.icon.wrong_size_message,Icon must be exactly {0}x{0}.\n\nSelected image is {1}x{2}.,Icon must be exactly {0}x{0}.\n\nSelected image is {1}x{2}.,SmutLabs Content Wizard
+smutlabs.content_wizard.icon.wrong_size_title,Wrong Icon Size,Wrong Icon Size,SmutLabs Content Wizard
+smutlabs.content_wizard.identity.heading,Identity (Locked After Creation),Identity (Locked After Creation),SmutLabs Content Wizard
+smutlabs.content_wizard.metadata.creator_link,Creator Link (optional),Creator Link (optional),SmutLabs Content Wizard
+smutlabs.content_wizard.metadata.creator_name,Creator Name (optional),Creator Name (optional),SmutLabs Content Wizard
+smutlabs.content_wizard.metadata.description,Description,Description,SmutLabs Content Wizard
+smutlabs.content_wizard.metadata.developer_content,Mark this content as Developer Content,Mark this content as Developer Content,SmutLabs Content Wizard
+smutlabs.content_wizard.metadata.developer_content_help,"Developer Content is hidden in-game unless Developer Mode is enabled. This is intended for test rigs, internal props, and mod-development utilities.","Developer Content is hidden in-game unless Developer Mode is enabled. This is intended for test rigs, internal props, and mod-development utilities.",SmutLabs Content Wizard
+smutlabs.content_wizard.metadata.display_name,Display Name,Display Name,SmutLabs Content Wizard
+smutlabs.content_wizard.metadata.heading,Metadata,Metadata,SmutLabs Content Wizard
+smutlabs.content_wizard.metadata.schema_version,Schema Version,Schema Version,SmutLabs Content Wizard
+smutlabs.content_wizard.mod_id,Mod ID,Mod ID,SmutLabs Content Wizard
+smutlabs.content_wizard.no_active,"Select an existing CatalogModProject asset, or click ""Create New..."" to start a new mod.\n\nThis asset is the source-of-truth for mod identity, versioning, icon, and export settings.","Select an existing CatalogModProject asset, or click ""Create New..."" to start a new mod.\n\nThis asset is the source-of-truth for mod identity, versioning, icon, and export settings.",SmutLabs Content Wizard
+smutlabs.content_wizard.ping,Ping,Ping,SmutLabs Content Wizard
+smutlabs.content_wizard.platforms.android,Build Android,Build Android,SmutLabs Content Wizard
+smutlabs.content_wizard.platforms.heading,Platforms,Platforms,SmutLabs Content Wizard
+smutlabs.content_wizard.platforms.quest_compatible,Quest Compatible,Quest Compatible,SmutLabs Content Wizard
+smutlabs.content_wizard.platforms.windows,Build Windows,Build Windows,SmutLabs Content Wizard
+smutlabs.content_wizard.reveal,Reveal,Reveal,SmutLabs Content Wizard
+smutlabs.content_wizard.validation.all_passed,All checks passed.,All checks passed.,SmutLabs Content Wizard
+smutlabs.content_wizard.validation.blocked,Export is blocked until all errors are resolved.,Export is blocked until all errors are resolved.,SmutLabs Content Wizard
+smutlabs.content_wizard.validation.heading,Validation,Validation,SmutLabs Content Wizard
+smutlabs.content_wizard.version.changed,Version set to {0}.{1}.{2},Version set to {0}.{1}.{2},SmutLabs Content Wizard
+smutlabs.content_wizard.version.heading,Version (Major.Minor.Patch),Version (Major.Minor.Patch),SmutLabs Content Wizard
+smutlabs.content_wizard.version.help,Major resets Minor and Patch to 0. Minor resets Patch to 0. Patch increments only. No manual typing.,Major resets Minor and Patch to 0. Minor resets Patch to 0. Patch increments only. No manual typing.,SmutLabs Content Wizard
+smutlabs.content_wizard.version.increment_major,Increment Major,Increment Major,SmutLabs Content Wizard
+smutlabs.content_wizard.version.increment_minor,Increment Minor,Increment Minor,SmutLabs Content Wizard
+smutlabs.content_wizard.version.increment_patch,Increment Patch,Increment Patch,SmutLabs Content Wizard
+smutlabs.content_wizard.version.major_dialog_message,Incrementing MAJOR indicates a breaking change.\n\nContinue?,Incrementing MAJOR indicates a breaking change.\n\nContinue?,SmutLabs Content Wizard
+smutlabs.content_wizard.version.major_dialog_title,Increment Major?,Increment Major?,SmutLabs Content Wizard
+smutlabs.content_wizard.version.undo,Undo,Undo,SmutLabs Content Wizard
+smutlabs.content_wizard.window_title,SmutLabs Content Wizard,SmutLabs Content Wizard,SmutLabs Content Wizard
+smutshared.common.cancel,Cancel,Cancel,SmutLabs Content Wizard
+smutshared.common.create,Create,Create,SmutLabs Content Wizard
+smutshared.common.ok,OK,OK,SmutLabs Content Wizard
