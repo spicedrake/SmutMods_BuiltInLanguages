@@ -1,0 +1,214 @@
+name: Sync Product English
+
+on:
+  workflow_call:
+    inputs:
+      product_name:
+        description: "Human-readable product name."
+        required: true
+        type: string
+
+      product_slug:
+        description: "Lowercase branch-safe product identifier."
+        required: true
+        type: string
+
+      source_path:
+        description: "CSV path relative to the calling repository root."
+        required: true
+        type: string
+
+      destination_path:
+        description: "CSV path relative to the BuiltInLanguages repository root."
+        required: true
+        type: string
+
+      expected_file_name:
+        description: "Expected CSV filename."
+        required: true
+        type: string
+
+    secrets:
+      BUILTIN_LANGUAGES_TOKEN:
+        description: "Token with write and pull-request access to BuiltInLanguages."
+        required: true
+
+jobs:
+  sync:
+    name: Sync ${{ inputs.product_name }} English
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout source repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}
+          ref: ${{ github.sha }}
+          path: source-product
+          fetch-depth: 1
+
+      - name: Verify source CSV
+        shell: bash
+        env:
+          SOURCE_PATH: ${{ inputs.source_path }}
+          EXPECTED_FILE_NAME: ${{ inputs.expected_file_name }}
+        run: |
+          set -euo pipefail
+
+          SOURCE_FILE="source-product/${SOURCE_PATH}"
+          ACTUAL_FILE_NAME="$(basename "$SOURCE_FILE")"
+
+          if [ ! -f "$SOURCE_FILE" ]; then
+            echo "::error::Missing generated English source: $SOURCE_FILE"
+            exit 1
+          fi
+
+          if [ "$ACTUAL_FILE_NAME" != "$EXPECTED_FILE_NAME" ]; then
+            echo "::error::Unexpected source filename."
+            echo "::error::Expected: $EXPECTED_FILE_NAME"
+            echo "::error::Actual:   $ACTUAL_FILE_NAME"
+            exit 1
+          fi
+
+          HEADER="$(head -n 1 "$SOURCE_FILE" | tr -d '\r')"
+
+          if [ "$HEADER" != "Key,English,Translation,Notes" ]; then
+            echo "::error::Unexpected CSV header: $HEADER"
+            exit 1
+          fi
+
+          echo "Validated source CSV:"
+          echo "$SOURCE_FILE"
+
+      - name: Checkout BuiltInLanguages
+        uses: actions/checkout@v4
+        with:
+          repository: spicedrake/SmutMods_BuiltInLanguages
+          token: ${{ secrets.BUILTIN_LANGUAGES_TOKEN }}
+          path: built-in-languages
+          fetch-depth: 0
+
+      - name: Copy English source
+        shell: bash
+        env:
+          SOURCE_PATH: ${{ inputs.source_path }}
+          DESTINATION_PATH: ${{ inputs.destination_path }}
+          EXPECTED_FILE_NAME: ${{ inputs.expected_file_name }}
+        run: |
+          set -euo pipefail
+
+          SOURCE_FILE="source-product/${SOURCE_PATH}"
+          DESTINATION_FILE="built-in-languages/${DESTINATION_PATH}"
+          DESTINATION_FILE_NAME="$(basename "$DESTINATION_FILE")"
+
+          if [ "$DESTINATION_FILE_NAME" != "$EXPECTED_FILE_NAME" ]; then
+            echo "::error::Unexpected destination filename."
+            echo "::error::Expected: $EXPECTED_FILE_NAME"
+            echo "::error::Actual:   $DESTINATION_FILE_NAME"
+            exit 1
+          fi
+
+          mkdir -p "$(dirname "$DESTINATION_FILE")"
+          cp "$SOURCE_FILE" "$DESTINATION_FILE"
+
+          echo "Copied:"
+          echo "  $SOURCE_FILE"
+          echo "to:"
+          echo "  $DESTINATION_FILE"
+
+      - name: Check for changes
+        id: changes
+        working-directory: built-in-languages
+        shell: bash
+        env:
+          DESTINATION_PATH: ${{ inputs.destination_path }}
+        run: |
+          set -euo pipefail
+
+          if git diff --quiet -- "$DESTINATION_PATH"; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "BuiltInLanguages already contains the current file."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "The destination file needs to be updated."
+          fi
+
+      - name: Commit and push update branch
+        if: steps.changes.outputs.changed == 'true'
+        working-directory: built-in-languages
+        shell: bash
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+          PRODUCT_NAME: ${{ inputs.product_name }}
+          PRODUCT_SLUG: ${{ inputs.product_slug }}
+          DESTINATION_PATH: ${{ inputs.destination_path }}
+        run: |
+          set -euo pipefail
+
+          SHORT_SHA="${SOURCE_SHA:0:8}"
+          BRANCH="automation/${PRODUCT_SLUG}-english-${SHORT_SHA}"
+
+          git config user.name "SpiceDrake Language Bot"
+          git config user.email "actions@users.noreply.github.com"
+
+          git checkout -b "$BRANCH"
+          git add "$DESTINATION_PATH"
+          git commit -m "Update ${PRODUCT_NAME} English source (${SHORT_SHA})"
+          git push origin "$BRANCH"
+
+          echo "BRANCH=$BRANCH" >> "$GITHUB_ENV"
+          echo "SHORT_SHA=$SHORT_SHA" >> "$GITHUB_ENV"
+
+      - name: Create pull request
+        if: steps.changes.outputs.changed == 'true'
+        working-directory: built-in-languages
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.BUILTIN_LANGUAGES_TOKEN }}
+          PRODUCT_NAME: ${{ inputs.product_name }}
+          DESTINATION_PATH: ${{ inputs.destination_path }}
+          SOURCE_REPOSITORY: ${{ github.repository }}
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          cat > /tmp/pull-request-body.md <<EOF
+          Automated ${PRODUCT_NAME} English-source update.
+
+          Source repository: \`${SOURCE_REPOSITORY}\`
+          Source commit: \`${SOURCE_SHA}\`
+
+          Updated file:
+
+          - \`${DESTINATION_PATH}\`
+          EOF
+
+          PR_URL="$(gh pr create \
+            --repo spicedrake/SmutMods_BuiltInLanguages \
+            --base main \
+            --head "$BRANCH" \
+            --title "Update ${PRODUCT_NAME} English source" \
+            --body-file /tmp/pull-request-body.md)"
+
+          echo "Created pull request: $PR_URL"
+          echo "PR_URL=$PR_URL" >> "$GITHUB_ENV"
+
+      - name: Enable automatic merge
+        if: steps.changes.outputs.changed == 'true'
+        working-directory: built-in-languages
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.BUILTIN_LANGUAGES_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          gh pr merge "$PR_URL" \
+            --repo spicedrake/SmutMods_BuiltInLanguages \
+            --squash \
+            --auto \
+            --delete-branch
+
+          echo "Automatic merge enabled for: $PR_URL"
