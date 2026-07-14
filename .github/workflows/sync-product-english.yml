@@ -141,15 +141,17 @@ jobs:
         working-directory: built-in-languages
         shell: bash
         env:
-          SOURCE_SHA: ${{ github.sha }}
           PRODUCT_NAME: ${{ inputs.product_name }}
           PRODUCT_SLUG: ${{ inputs.product_slug }}
           DESTINATION_PATH: ${{ inputs.destination_path }}
+          SOURCE_SHA: ${{ github.sha }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
         run: |
           set -euo pipefail
 
           SHORT_SHA="${SOURCE_SHA:0:8}"
-          BRANCH="automation/${PRODUCT_SLUG}-english-${SHORT_SHA}"
+          BRANCH="automation/${PRODUCT_SLUG}-english-${RUN_ID}-${RUN_ATTEMPT}"
 
           git config user.name "SpiceDrake Language Bot"
           git config user.email "actions@users.noreply.github.com"
@@ -160,7 +162,6 @@ jobs:
           git push origin "$BRANCH"
 
           echo "BRANCH=$BRANCH" >> "$GITHUB_ENV"
-          echo "SHORT_SHA=$SHORT_SHA" >> "$GITHUB_ENV"
 
       - name: Create pull request
         if: steps.changes.outputs.changed == 'true'
@@ -196,7 +197,7 @@ jobs:
           echo "Created pull request: $PR_URL"
           echo "PR_URL=$PR_URL" >> "$GITHUB_ENV"
 
-      - name: Enable automatic merge
+      - name: Merge pull request
         if: steps.changes.outputs.changed == 'true'
         working-directory: built-in-languages
         shell: bash
@@ -208,7 +209,6 @@ jobs:
           gh pr merge "$PR_URL" \
             --repo spicedrake/SmutMods_BuiltInLanguages \
             --squash \
-            --auto \
             --delete-branch
 
-          echo "Automatic merge enabled for: $PR_URL"
+          echo "Merged pull request: $PR_URL"
