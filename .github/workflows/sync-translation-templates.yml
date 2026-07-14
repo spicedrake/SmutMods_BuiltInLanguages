@@ -1,0 +1,76 @@
+name: Sync Translation Templates
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "LanguagePacks/English/SmutMods.csv"
+      - "LanguagePacks/English/SmutShared.csv"
+      - "LanguagePacks/English/SmutLabs.csv"
+
+  workflow_dispatch:
+
+concurrency:
+  group: sync-translation-templates
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  synchronize:
+    name: Synchronize non-English CSV files
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout BuiltInLanguages
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Synchronize translation CSV files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python3 .github/scripts/sync_translation_templates.py
+
+      - name: Show synchronization changes
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git status --short
+
+          echo
+          echo "CSV changes:"
+          git diff -- LanguagePacks || true
+
+      - name: Check for changes
+        id: changes
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if git diff --quiet -- LanguagePacks; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "All translation CSV files are already synchronized."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Translation CSV synchronization produced changes."
+          fi
+
+      - name: Commit synchronized translation templates
+        if: steps.changes.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "SpiceDrake Language Bot"
+          git config user.email "actions@users.noreply.github.com"
+
+          git add LanguagePacks
+          git commit -m "Synchronize translation templates with English"
+          git push origin HEAD:main
