@@ -1,17 +1,98 @@
 Key,English,Translation,Notes
-smutlabs.content_wizard.window_title,SmutLabs Content Wizard,SmutLabs Cargo Wizard,Main wizard window title
+smutlabs.common.cancel,Cancel,,
+smutlabs.common.create,Create,,
+smutlabs.common.increment,Increment,,
+smutlabs.common.ok,OK,,
 smutlabs.content_wizard.active_project,Active Mod Project,Active Cargo Charter,Label beside the selected project
+smutlabs.content_wizard.banner_missing,Wizard banner not found at:\n{0},,
+smutlabs.content_wizard.build.browse,Browse,,
+smutlabs.content_wizard.build.choose_output_folder,Choose Export Output Folder,,
+smutlabs.content_wizard.build.failed_message,Platform: {0}\n\n{1},,
+smutlabs.content_wizard.build.failed_title,Build Failed,,
+smutlabs.content_wizard.build.heading,Build / Export,,
+smutlabs.content_wizard.build.output_folder,Output Folder,,
+smutlabs.content_wizard.build.output_required,Choose an output folder to build/export into.,,
+smutlabs.content_wizard.build.selected_platforms,Build / Export Selected Platforms,,
+smutlabs.content_wizard.catalog_type,Catalog Type,,
+smutlabs.content_wizard.content.character_prefab,Character Prefab,,
+smutlabs.content_wizard.content.force_android_fallback,Force Android Fallback Materials (testing),,
+smutlabs.content_wizard.content.force_android_fallback_help,Currently ignored. Android builds preserve original materials and shaders for live Quest shader testing.,,
+smutlabs.content_wizard.content.heading,Catalog Content,,
+smutlabs.content_wizard.content.level_scene,Level Scene,,
+smutlabs.content_wizard.content.prop_prefab,Prop Prefab,,
+smutlabs.content_wizard.content.scenario_notes,Scenario Notes (stub),,
+smutlabs.content_wizard.content.scenario_stub_help,Scenario export is a stub for now (metadata + icon + mod.json).,,
+smutlabs.content_wizard.create.empty,(empty),,
+smutlabs.content_wizard.create.final_mod_id,Final Mod ID: {0},,
+smutlabs.content_wizard.create.heading,Create New Catalog Mod,,
+smutlabs.content_wizard.create.help,"Mod ID is the permanent machine-safe identifier for this mod.\nIf Create is enabled, the name is valid and safe to proceed with.",,
+smutlabs.content_wizard.create.invalid_mod_id_title,Invalid Mod ID,,
+smutlabs.content_wizard.create.mod_id_label,"Mod ID (permanent, lowercase, machine-safe)",,
+smutlabs.content_wizard.create.rule_allowed_chars,"Only lowercase letters, numbers, and underscores are allowed.",,
+smutlabs.content_wizard.create.rule_max_length,Must be {0} characters or fewer.,,
+smutlabs.content_wizard.create.rule_min_length,Must be at least {0} characters.,,
+smutlabs.content_wizard.create.rule_no_hyphens,No hyphens.,,
+smutlabs.content_wizard.create.rule_no_spaces,No spaces.,,
+smutlabs.content_wizard.create.rule_no_uppercase,No uppercase letters.,,
+smutlabs.content_wizard.create.rule_not_empty,Must not be empty.,,
+smutlabs.content_wizard.create.rule_start_letter,Must start with a letter.,,
+smutlabs.content_wizard.create.rules_heading,Rules,,
+smutlabs.content_wizard.create.save_message,Choose where to save this CatalogModProject asset.,,
+smutlabs.content_wizard.create.save_title,Create Mod Project Asset,,
+smutlabs.content_wizard.create.status_invalid,<color=#E06C75><b>INVALID</b></color>  Fix the failing rules below before creating the mod.,,
+smutlabs.content_wizard.create.status_valid,<color=#65C466><b>VALID</b></color>  This Mod ID is ready to use.,,
+smutlabs.content_wizard.create.title,Create New Mod,,
 smutlabs.content_wizard.create_new,Create New...,Commission New...,Button that opens the new mod window
-smutlabs.content_wizard.ping,Ping,Signal,Highlights the selected project asset
-smutlabs.content_wizard.reveal,Reveal,Find in Hold,Reveals the selected project asset
-smutlabs.content_wizard.no_active,"Select an existing CatalogModProject asset, or click ""Create New..."" to start a new mod.\n\nThis asset is the source-of-truth for mod identity, versioning, icon, and export settings.","Choose an existing cargo charter, or click ""Commission New..."" to begin a new mod.\n\nThis charter governs the cargo's identity, version, icon, and export orders.",Shown when no project is selected
+smutlabs.content_wizard.created_utc,Created (UTC),,
+smutlabs.content_wizard.icon.capture,Capture Icon,,
+smutlabs.content_wizard.icon.heading,Icon (Required),,
+smutlabs.content_wizard.icon.invalid_image_message,Could not read that image file.,,
+smutlabs.content_wizard.icon.invalid_image_title,Invalid Image,,
+smutlabs.content_wizard.icon.no_icon,{0}x{0}\n(no icon),,
+smutlabs.content_wizard.icon.no_sceneview_message,No active SceneView camera found. Click in the Scene view and try again.,,
+smutlabs.content_wizard.icon.no_sceneview_title,No SceneView,,
+smutlabs.content_wizard.icon.replace_background,Replace Background,,
+smutlabs.content_wizard.icon.replace_background_help,"When enabled, the SceneView skybox/background is replaced with pure black during icon capture. Scene geometry still renders normally.",,
+smutlabs.content_wizard.icon.requirements,Icon must be exactly {0}x{0}. Uploads that do not match will be rejected. Export is blocked without an icon.,,
+smutlabs.content_wizard.icon.upload,Upload Icon,,
+smutlabs.content_wizard.icon.upload_dialog_title,Upload Icon (PNG/JPG),,
+smutlabs.content_wizard.icon.upload_failed_message,Error reading image:\n{0},,
+smutlabs.content_wizard.icon.upload_failed_title,Upload Failed,,
+smutlabs.content_wizard.icon.wrong_size_message,Icon must be exactly {0}x{0}.\n\nSelected image is {1}x{2}.,,
+smutlabs.content_wizard.icon.wrong_size_title,Wrong Icon Size,,
 smutlabs.content_wizard.identity.heading,Identity (Locked After Creation),Identity (Sealed After Commission),Section heading
-smutlabs.content_wizard.identity.catalog_type,Catalog Type,Cargo Type,Locked catalog type field
-smutlabs.content_wizard.identity.mod_id,Mod ID,Mod Mark,Locked mod identifier field
-smutlabs.content_wizard.identity.created_utc,Created (UTC),Commissioned (UTC),Locked creation timestamp field
+smutlabs.content_wizard.metadata.creator_link,Creator Link (optional),,
+smutlabs.content_wizard.metadata.creator_name,Creator Name (optional),,
+smutlabs.content_wizard.metadata.description,Description,,
+smutlabs.content_wizard.metadata.developer_content,Mark this content as Developer Content,,
+smutlabs.content_wizard.metadata.developer_content_help,"Developer Content is hidden in-game unless Developer Mode is enabled. This is intended for test rigs, internal props, and mod-development utilities.",,
+smutlabs.content_wizard.metadata.display_name,Display Name,,
+smutlabs.content_wizard.metadata.heading,Metadata,,
+smutlabs.content_wizard.metadata.schema_version,Schema Version,,
+smutlabs.content_wizard.mod_id,Mod ID,,
+smutlabs.content_wizard.no_active,"Select an existing CatalogModProject asset, or click ""Create New..."" to start a new mod.\n\nThis asset is the source-of-truth for mod identity, versioning, icon, and export settings.","Choose an existing cargo charter, or click ""Commission New..."" to begin a new mod.\n\nThis charter governs the cargo's identity, version, icon, and export orders.",Shown when no project is selected
+smutlabs.content_wizard.ping,Ping,Signal,Highlights the selected project asset
+smutlabs.content_wizard.platforms.android,Build Android,,
+smutlabs.content_wizard.platforms.heading,Platforms,,
+smutlabs.content_wizard.platforms.quest_compatible,Quest Compatible,,
+smutlabs.content_wizard.platforms.windows,Build Windows,,
+smutlabs.content_wizard.reveal,Reveal,Find in Hold,Reveals the selected project asset
+smutlabs.content_wizard.validation.all_passed,All checks passed.,,
+smutlabs.content_wizard.validation.blocked,Export is blocked until all errors are resolved.,,
+smutlabs.content_wizard.validation.heading,Validation,,
+smutlabs.content_wizard.version.changed,Version set to {0}.{1}.{2},Voyage mark set to {0}.{1}.{2},Notification after changing version
 smutlabs.content_wizard.version.heading,Version (Major.Minor.Patch),Voyage Mark (Major.Minor.Patch),Version section heading
+smutlabs.content_wizard.version.help,Major resets Minor and Patch to 0. Minor resets Patch to 0. Patch increments only. No manual typing.,,
 smutlabs.content_wizard.version.increment_major,Increment Major,Raise Major,Version button
 smutlabs.content_wizard.version.increment_minor,Increment Minor,Raise Minor,Version button
 smutlabs.content_wizard.version.increment_patch,Increment Patch,Raise Patch,Version button
+smutlabs.content_wizard.version.major_dialog_message,Incrementing MAJOR indicates a breaking change.\n\nContinue?,,
+smutlabs.content_wizard.version.major_dialog_title,Increment Major?,,
 smutlabs.content_wizard.version.undo,Undo,Rewind,Version undo button
-smutlabs.content_wizard.version.changed,Version set to {0}.{1}.{2},Voyage mark set to {0}.{1}.{2},Notification after changing version
+smutlabs.content_wizard.window_title,SmutLabs Content Wizard,SmutLabs Cargo Wizard,Main wizard window title
+smutshared.common.cancel,Cancel,,
+smutshared.common.create,Create,,
+smutshared.common.ok,OK,,
+smutlabs.content_wizard.identity.catalog_type,Catalog Type,Cargo Type,Locked catalog type field
+smutlabs.content_wizard.identity.mod_id,Mod ID,Mod Mark,Locked mod identifier field
+smutlabs.content_wizard.identity.created_utc,Created (UTC),Commissioned (UTC),Locked creation timestamp field
