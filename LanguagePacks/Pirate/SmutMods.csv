@@ -1,9 +1,9 @@
 Key,English,Translation,Notes
 smutmods.boot_menu.language.none_available,No languages available.,Nay languages be available.,,
-smutmods.boot_menu.language.title,LANGUAGE,LANGUAGE,,
-smutmods.boot_menu.language.tooltip,Language,Tongue,,
-smutmods.boot_menu.mode.desktop_experimental,DESKTOP [Experimental],DESKTOP [Experimental],,
-smutmods.boot_menu.mode.vr,VR,VR,,
+smutmods.boot_menu.language.title,LANGUAGE,PIRATE MODE,,
+smutmods.boot_menu.language.tooltip,Language,Choose Yer Tongue,
+smutmods.boot_menu.mode.desktop_experimental,DESKTOP [Experimental],LANDLUBBER MODE,
+smutmods.boot_menu.mode.vr,VR,VRRRR,,
 smutmods.common.buildType.development,Development,Development,,
 smutmods.common.buildType.release,Release,Release,,
 smutmods.contentBrowser.actions.characterNotFound,Character not found.,Matey not found.,,
