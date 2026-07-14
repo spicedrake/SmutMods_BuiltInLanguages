@@ -1,0 +1,248 @@
+name: Publish Stable Language Packs
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: publish-stable-language-packs
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    name: Build and publish stable translation release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout BuiltInLanguages
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Validate repository structure
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          ROOT="LanguagePacks"
+
+          if [ ! -d "$ROOT" ]; then
+            echo "::error::Missing LanguagePacks directory."
+            exit 1
+          fi
+
+          if [ ! -d "$ROOT/English" ]; then
+            echo "::error::Missing required English Language Pack."
+            exit 1
+          fi
+
+          REQUIRED_ENGLISH_FILES=(
+            "pack.json"
+            "SmutMods.csv"
+            "SmutLabs.csv"
+            "SmutShared.csv"
+          )
+
+          for FILE_NAME in "${REQUIRED_ENGLISH_FILES[@]}"; do
+            FILE_PATH="$ROOT/English/$FILE_NAME"
+
+            if [ ! -f "$FILE_PATH" ]; then
+              echo "::error::Required English file is missing: $FILE_PATH"
+              exit 1
+            fi
+          done
+
+          PACK_COUNT=0
+
+          while IFS= read -r PACK_DIRECTORY; do
+            PACK_COUNT=$((PACK_COUNT + 1))
+
+            PACK_NAME="$(basename "$PACK_DIRECTORY")"
+            MANIFEST="$PACK_DIRECTORY/pack.json"
+
+            if [ ! -f "$MANIFEST" ]; then
+              echo "::error::Language Pack '$PACK_NAME' is missing pack.json."
+              exit 1
+            fi
+
+            CSV_COUNT="$(
+              find "$PACK_DIRECTORY" \
+                -maxdepth 1 \
+                -type f \
+                -name "*.csv" \
+                | wc -l
+            )"
+
+            if [ "$CSV_COUNT" -lt 1 ]; then
+              echo "::error::Language Pack '$PACK_NAME' contains no product CSV files."
+              exit 1
+            fi
+
+            echo "Validated pack: $PACK_NAME ($CSV_COUNT CSV file(s))"
+          done < <(
+            find "$ROOT" \
+              -mindepth 1 \
+              -maxdepth 1 \
+              -type d \
+              | sort
+          )
+
+          if [ "$PACK_COUNT" -lt 1 ]; then
+            echo "::error::No Language Pack folders were found."
+            exit 1
+          fi
+
+          echo "Validated Language Pack count: $PACK_COUNT"
+
+      - name: Validate CSV headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          EXPECTED_HEADER="Key,English,Translation,Notes"
+
+          while IFS= read -r CSV_FILE; do
+            HEADER="$(head -n 1 "$CSV_FILE" | tr -d '\r' | sed '1s/^\xEF\xBB\xBF//')"
+
+            if [ "$HEADER" != "$EXPECTED_HEADER" ]; then
+              echo "::error file=$CSV_FILE::Unexpected CSV header."
+              echo "::error::Expected: $EXPECTED_HEADER"
+              echo "::error::Actual:   $HEADER"
+              exit 1
+            fi
+
+            echo "Validated CSV: $CSV_FILE"
+          done < <(
+            find LanguagePacks \
+              -type f \
+              -name "*.csv" \
+              | sort
+          )
+
+      - name: Build release archive
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          OUTPUT_DIRECTORY="release-output"
+          ARCHIVE_PATH="$OUTPUT_DIRECTORY/BuiltInLanguagePacks.zip"
+
+          rm -rf "$OUTPUT_DIRECTORY"
+          mkdir -p "$OUTPUT_DIRECTORY"
+
+          (
+            cd LanguagePacks
+            zip -r "../$ARCHIVE_PATH" . \
+              -x "*.git*" \
+              -x "*.tmp" \
+              -x "*.meta"
+          )
+
+          if [ ! -f "$ARCHIVE_PATH" ]; then
+            echo "::error::Release archive was not created."
+            exit 1
+          fi
+
+          echo "Created release archive:"
+          ls -lh "$ARCHIVE_PATH"
+
+          echo
+          echo "Archive contents:"
+          unzip -l "$ARCHIVE_PATH"
+
+      - name: Verify release archive
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          ARCHIVE_PATH="release-output/BuiltInLanguagePacks.zip"
+          VERIFY_DIRECTORY="${RUNNER_TEMP}/verify-language-release"
+
+          rm -rf "$VERIFY_DIRECTORY"
+          mkdir -p "$VERIFY_DIRECTORY"
+
+          unzip -q "$ARCHIVE_PATH" -d "$VERIFY_DIRECTORY"
+
+          REQUIRED_FILES=(
+            "$VERIFY_DIRECTORY/English/pack.json"
+            "$VERIFY_DIRECTORY/English/SmutMods.csv"
+            "$VERIFY_DIRECTORY/English/SmutLabs.csv"
+            "$VERIFY_DIRECTORY/English/SmutShared.csv"
+          )
+
+          for FILE_PATH in "${REQUIRED_FILES[@]}"; do
+            if [ ! -f "$FILE_PATH" ]; then
+              echo "::error::Required file is missing from archive: $FILE_PATH"
+              exit 1
+            fi
+          done
+
+          echo "Release archive verified successfully."
+
+      - name: Create release identity
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          UTC_DATE="$(date -u +'%Y-%m-%d')"
+          TAG="translations-${UTC_DATE}-${GITHUB_RUN_NUMBER}"
+          TITLE="Stable Language Packs ${UTC_DATE} (${GITHUB_RUN_NUMBER})"
+
+          echo "RELEASE_TAG=$TAG" >> "$GITHUB_ENV"
+          echo "RELEASE_TITLE=$TITLE" >> "$GITHUB_ENV"
+
+          echo "Release tag: $TAG"
+          echo "Release title: $TITLE"
+
+      - name: Publish GitHub Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          cat > release-output/release-notes.md <<EOF
+          Stable built-in Language Packs for the SmutMods ecosystem.
+
+          Source branch: \`main\`
+          Source commit: \`${GITHUB_SHA}\`
+
+          Included asset:
+
+          - \`BuiltInLanguagePacks.zip\`
+          EOF
+
+          gh release create "$RELEASE_TAG" \
+            "release-output/BuiltInLanguagePacks.zip" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "$RELEASE_TITLE" \
+            --notes-file "release-output/release-notes.md" \
+            --latest
+
+          echo "Published release: $RELEASE_TAG"
+
+      - name: Verify published asset
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          gh release view "$RELEASE_TAG" \
+            --repo "$GITHUB_REPOSITORY"
+
+          gh release download "$RELEASE_TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern "BuiltInLanguagePacks.zip" \
+            --dir "${RUNNER_TEMP}/published-release-check"
+
+          if [ ! -f "${RUNNER_TEMP}/published-release-check/BuiltInLanguagePacks.zip" ]; then
+            echo "::error::Published release asset could not be downloaded."
+            exit 1
+          fi
+
+          echo "Published release asset verified."
